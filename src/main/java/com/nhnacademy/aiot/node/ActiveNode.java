@@ -1,4 +1,4 @@
-package nhnacademy.aiot.node;
+package com.nhnacademy.aiot.node;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +8,8 @@ public abstract class ActiveNode extends Node implements Runnable {
 
     private final Thread thread;
 
-    protected ActiveNode(String name) {
-        super(name);
+    protected ActiveNode(String id, String name) {
+        super(id, name);
         thread = new Thread(this, getName());
     }
 

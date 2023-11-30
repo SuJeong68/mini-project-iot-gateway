@@ -1,15 +1,15 @@
-package nhnacademy.aiot.node;
+package com.nhnacademy.aiot.node;
 
-import nhnacademy.aiot.exception.NotDeviceException;
-import nhnacademy.aiot.message.MQTTMessage;
-import nhnacademy.aiot.message.Message;
-import nhnacademy.aiot.wire.Wire;
+import com.nhnacademy.aiot.exception.NotDeviceException;
+import com.nhnacademy.aiot.wire.Wire;
+import com.nhnacademy.aiot.message.MQTTMessage;
+import com.nhnacademy.aiot.message.Message;
 import org.json.JSONObject;
 
 public final class DeviceTopicNode extends InOutNode {
 
-    public DeviceTopicNode(String name, int inCount, int outCount) {
-        super(name, inCount, outCount);
+    public DeviceTopicNode(String id, String name) {
+        super(id, name);
     }
 
     @Override

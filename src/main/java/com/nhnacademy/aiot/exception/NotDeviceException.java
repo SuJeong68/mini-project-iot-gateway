@@ -1,3 +1,3 @@
-package nhnacademy.aiot.exception;
+package com.nhnacademy.aiot.exception;
 
 public class NotDeviceException extends RuntimeException {}

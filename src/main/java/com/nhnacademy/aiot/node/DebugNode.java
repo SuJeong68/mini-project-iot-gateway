@@ -1,13 +1,13 @@
-package nhnacademy.aiot.node;
+package com.nhnacademy.aiot.node;
 
-import nhnacademy.aiot.message.MQTTMessage;
-import nhnacademy.aiot.message.Message;
-import nhnacademy.aiot.wire.Wire;
+import com.nhnacademy.aiot.message.MQTTMessage;
+import com.nhnacademy.aiot.message.Message;
+import com.nhnacademy.aiot.wire.Wire;
 
 public final class DebugNode extends OutNode {
 
-    public DebugNode(String name, int count) {
-        super(name, count);
+    public DebugNode(String id, String name) {
+        super(id, name);
     }
 
     @Override

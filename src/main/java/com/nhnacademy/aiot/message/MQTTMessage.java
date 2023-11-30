@@ -1,4 +1,4 @@
-package nhnacademy.aiot.message;
+package com.nhnacademy.aiot.message;
 
 import org.json.JSONObject;
 

@@ -1,36 +1,33 @@
-package nhnacademy.aiot.node;
+package com.nhnacademy.aiot.node;
 
-import java.util.Optional;
-import nhnacademy.aiot.message.MQTTMessage;
+import com.nhnacademy.aiot.message.MQTTMessage;
+import com.nhnacademy.aiot.message.Message;
+import com.nhnacademy.aiot.wire.Wire;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttSecurityException;
-import org.json.JSONObject;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public final class MQTTInNode extends InNode {
+public class MQTTOutNode extends OutNode {
 
     private final String serverURI;
-    private final String topicFilter;
 
     private IMqttClient client;
-    private MqttConnectOptions options;
 
-    public MQTTInNode(String name, String serverURI, String topicFilter, int count) {
-        super(name, count);
+    public MQTTOutNode(String id, String name, String serverURI) {
+        super(id, name);
         this.serverURI = serverURI;
-        this.topicFilter = topicFilter;
     }
 
     @Override
     public void preprocess() {
-        logger.debug("MQTTInNode {} - preprocess()", getName());
+        logger.debug("MQTTOutNode {} - preprocess()", getName());
 
         try {
-            client = new MqttClient(serverURI, getUuid());
+            client = new MqttClient(serverURI, getId());
 
-            options = new MqttConnectOptions();
+            MqttConnectOptions options = new MqttConnectOptions();
             options.setAutomaticReconnect(true);
             options.setCleanSession(true);
             options.setConnectionTimeout(10);
@@ -38,8 +35,6 @@ public final class MQTTInNode extends InNode {
             options.setExecutorServiceTimeout(0);
 
             client.connect(options);
-
-            client.subscribe(topicFilter, (topic, msg) -> output(new MQTTMessage(topic, new JSONObject(msg.toString()))));
         } catch (MqttException e) {
             logger.error(e.getMessage());
         }
@@ -48,8 +43,15 @@ public final class MQTTInNode extends InNode {
     @Override
     public void process() {
         try {
-            if (!client.isConnected()) {
-                client.connect(options);
+            for (int i = 0; i < getInWireCount(); i++) {
+                Wire wire = getInWire(i);
+                if (wire.hasMessage()) {
+                    Message message = wire.get();
+                    if (message instanceof MQTTMessage) {
+                        MQTTMessage mqttMessage = (MQTTMessage) message;
+                        client.publish(mqttMessage.getTopic(), new MqttMessage(mqttMessage.getPayload().toString().getBytes()));
+                    }
+                }
             }
         } catch (MqttException e) {
             logger.error(e.getMessage());
@@ -58,7 +60,7 @@ public final class MQTTInNode extends InNode {
 
     @Override
     public void postprocess() {
-        logger.debug("MQTTInNode {} - postprocess()", getName());
+        logger.debug("MQTTOutNode {} - postprocess()", getName());
 
         try {
             client.disconnect();

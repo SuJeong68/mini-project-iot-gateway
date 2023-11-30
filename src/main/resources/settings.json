@@ -1,0 +1,53 @@
+[
+  {
+    "id": "1",
+    "name": "NHN Academy EMS MQTT In",
+    "type": "MQTTInNode",
+    "topic": "application/#",
+    "broker": "ems.nhnacademy.com",
+    "port": "1883",
+    "wires": [
+      [
+        "2"
+      ]
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Device Topic Node",
+    "type": "DeviceTopicNode",
+    "wires": [
+      [
+        "3",
+        "4"
+      ]
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Device Topic Debug Node",
+    "type": "DebugNode",
+    "wires": []
+  },
+  {
+    "id": "4",
+    "name": "CLI Node",
+    "type": "CLIFilterNode",
+    "options": ["an", "s"],
+    "an": "9a87910d-fc6c-4f10-a6fd-a626a1ca6b4a",
+    "sensor": "temperature,co2",
+    "wires": [
+      [
+        "5"
+      ]
+    ]
+  },
+  {
+    "id": "5",
+    "name": "Localhost MQTT Out Node",
+    "type": "MQTTOutNode",
+    "broker": "localhost",
+    "port": "1883",
+    "wires": []
+  }
+]

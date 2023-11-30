@@ -1,19 +1,19 @@
-package nhnacademy.aiot.node;
+package com.nhnacademy.aiot.node;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import nhnacademy.aiot.message.MQTTMessage;
-import nhnacademy.aiot.message.Message;
-import nhnacademy.aiot.wire.Wire;
+import com.nhnacademy.aiot.message.MQTTMessage;
+import com.nhnacademy.aiot.message.Message;
+import com.nhnacademy.aiot.wire.Wire;
 import org.apache.commons.cli.CommandLine;
 import org.json.JSONObject;
 
-public class CLIFilterNode extends InOutNode {
+public final class CLIFilterNode extends InOutNode {
 
     private final CommandLine commandLine;
 
-    public CLIFilterNode(String name, CommandLine commandLine, int inCount, int outCount) {
-        super(name, inCount, outCount);
+    public CLIFilterNode(String id, String name, CommandLine commandLine) {
+        super(id, name);
         this.commandLine = commandLine;
     }
 
